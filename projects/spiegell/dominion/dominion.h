@@ -136,5 +136,10 @@ int playVillage(struct gameState *state, int handPos);
 int playFeast(struct gameState *state, int choice1);
 int playCouncil_Room(struct gameState *state, int handPos);
 
-
+//refactored card prototypes
+int adventurer_card(struct gameState *state, int *temphand);
+int councilRoom_card(struct gameState *state, int currentPlayer, int handPos, int i);
+int smithy_card(int i, struct gameState *state, int currentPlayer, int handPos);
+int village_card(struct gameState *state, int currentPlayer, int handPos);
+int greatHall_card(struct gameState *state, int currentPlayer, int handPos);
 #endif
