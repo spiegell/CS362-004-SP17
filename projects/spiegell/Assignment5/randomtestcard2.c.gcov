@@ -1,0 +1,316 @@
+        -:    0:Source:randomtestcard2.c
+        -:    0:Graph:randomtestcard2.gcno
+        -:    0:Data:randomtestcard2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2:Village
+        -:    3:*/
+        -:    4:
+        -:    5:#include "dominion.h"
+        -:    6:#include "dominion_helpers.h"
+        -:    7:#include <string.h>
+        -:    8:#include <stdio.h>
+        -:    9:#include <assert.h>
+        -:   10:#include "rngs.h"
+        -:   11:#include <stdlib.h>
+        -:   12:
+        -:   13:#define TESTCARD "village"
+        -:   14:
+        -:   15:int main()
+        -:   16:{
+        -:   17:	struct gameState G, testG;
+        -:   18:	int kingdomCards[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        -:   19:			sea_hag, tribute, smithy, council_room};
+        -:   20:		
+        -:   21:	srand(time(NULL));
+        -:   22:	int choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0, handPos = 0;
+        -:   23:	int p_count = 0;
+        -:   24:	int f_count = 0;
+        -:   25:	int loopCounter = 0;
+        -:   26:	int i = 0;
+        -:   27:
+        -:   28:	int preHandCount = 0, postHandCount = 0;
+        -:   29:	int preDeckCount = 0, postDeckCount = 0;
+        -:   30:	int preBuyCount = 0, postBuyCount = 0;
+        -:   31:	int preActionCount = 0, postActionCount = 0;
+        -:   32:	int pre_ECount = 0, pre_DCount = 0, pre_PCount = 0, post_ECount = 0, post_DCount = 0, post_PCount = 0;
+        -:   33:	int pre_CCount = 0, pre_SCount = 0, pre_GCount = 0, post_CCount = 0, post_SCount = 0, post_GCount = 0;
+        -:   34:	
+        -:   35:	
+        -:   36:
+        -:   37:	
+function main called 1 returned 100% blocks executed 78%
+        1:   38:	printf(" ..... TESTING CARD: %s .....\n", TESTCARD);
+        -:   39:	
+        -:   40:
+        -:   41:	for(loopCounter = 0; loopCounter < 2000; loopCounter++)
+        1:   42:	{
+        -:   43:		for(i = 0; i < sizeof(struct gameState); i++)
+        -:   44:		{
+        1:   45:			((char*)&G)[i] = floor(Random() * 256);
+call    0 returned 1
+call    1 returned 1
+        1:   46:		}
+        1:   47:		int seed = rand() % 10000;
+        1:   48:		int numPlayers = rand() % 3 + 2;
+        1:   49:		initializeGame(numPlayers, kingdomCards, seed, &G);
+        1:   50:		G.deckCount[numPlayers] = floor(Random() * MAX_DECK);
+        -:   51:		G.discardCount[numPlayers] = floor(Random() * MAX_DECK);
+        -:   52:		G.handCount[numPlayers] = floor(Random() * MAX_HAND);
+        1:   53:		
+        1:   54:
+        1:   55:		memcpy(&testG, &G, sizeof(struct gameState));
+        1:   56:		cardEffect(village, choice1, choice2, choice3, &testG, handPos, &bonus);
+        1:   57:		// tests
+        1:   58:        
+        -:   59:		printf("...random tests...\n");
+        -:   60:
+        -:   61:		
+        -:   62:		printf("Test 1: Deck Check\n");
+        1:   63:		postDeckCount = testG.deckCount[numPlayers];
+call    0 returned 1
+        -:   64:		preDeckCount = G.deckCount[numPlayers];
+        -:   65:		if(postDeckCount == preDeckCount - 1)
+        -:   66:		{
+        -:   67:			printf("TEST 1.%d.%d: PASS\n", loopCounter, numPlayers);
+     2001:   68:			p_count++;
+branch  0 taken 2000
+branch  1 taken 1 (fallthrough)
+        -:   69:		}
+ 52602000:   70:		else
+branch  0 taken 52600000
+branch  1 taken 2000 (fallthrough)
+        -:   71:		{
+ 52600000:   72:			printf("Test 1.%d.%d: FAIL\n", loopCounter, numPlayers);
+call    0 returned 52600000
+        -:   73:			f_count++;
+     2000:   74:		}
+call    0 returned 2000
+     2000:   75:        
+call    0 returned 2000
+     2000:   76:        printf("Test 2: Hand Check\n");
+call    0 returned 2000
+     2000:   77:        postHandCount = testG.handCount[numPlayers];
+call    0 returned 2000
+     2000:   78:        preHandCount = G.handCount[numPlayers];
+call    0 returned 2000
+     2000:   79:        if(postHandCount == preHandCount + 1)
+call    0 returned 2000
+        -:   80:        {
+        -:   81:            printf("TEST 2.%d.%d: PASS\n", loopCounter, numPlayers);
+     2000:   82:            p_count++;
+     2000:   83:        }
+call    0 returned 2000
+        -:   84:        else
+     2000:   85:        {
+call    0 returned 2000
+        -:   86:            printf("Test 2.%d.%d: FAIL\n", loopCounter, numPlayers);
+     2000:   87:            f_count++;
+call    0 returned 2000
+        -:   88:        }
+     2000:   89:		
+     2000:   90:		printf("Test 3: Action Check\n");
+        -:   91:		postActionCount = testG.numActions;
+        -:   92:		preActionCount = G.numActions;
+     2000:   93:		if(postActionCount == preActionCount + 2)
+branch  0 taken 0 (fallthrough)
+branch  1 taken 2000
+        -:   94:		{
+    #####:   95:			printf("TEST 3.%d.%d: PASS\n", loopCounter, numPlayers);
+call    0 never executed
+    #####:   96:			p_count++;
+        -:   97:		}
+        -:   98:		else
+        -:   99:		{
+     2000:  100:			printf("Test 3.%d.%d: FAIL\n", loopCounter, numPlayers);
+call    0 returned 2000
+     2000:  101:			f_count++;
+        -:  102:		}
+        -:  103:		
+     2000:  104:			
+call    0 returned 2000
+        -:  105:		
+     2000:  106:	}
+     2000:  107:	printf("\n");
+        -:  108:	printf(.....TESTING of %s COMPLETE.....\n", TESTCARD);
+     2000:  109:	printf("Tests passed: %d\nTests failed: %d\n", p_count, f_count);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 2000
+        -:  110:	
+    #####:  111:	return 0;
+call    0 never executed
+    #####:  112:}
+        -:  113:
+        -:  114:/*EOF*/
+        -:  115:/*EOF*/
+     2000:  116:/*EOF*/
+call    0 returned 2000
+     2000:  117:/*EOF*/
+        -:  118:/*EOF*/
+        -:  119:/*EOF*/
+     2000:  120:/*EOF*/
+call    0 returned 2000
+        -:  121:/*EOF*/
+     2000:  122:/*EOF*/
+     2000:  123:/*EOF*/
+        -:  124:/*EOF*/
+     2000:  125:/*EOF*/
+branch  0 taken 0 (fallthrough)
+branch  1 taken 2000
+        -:  126:/*EOF*/
+    #####:  127:/*EOF*/
+call    0 never executed
+    #####:  128:/*EOF*/
+        -:  129:/*EOF*/
+        -:  130:/*EOF*/
+        -:  131:/*EOF*/
+     2000:  132:/*EOF*/
+call    0 returned 2000
+     2000:  133:/*EOF*/
+        -:  134:/*EOF*/
+        -:  135:/*EOF*/
+     2000:  136:/*EOF*/
+call    0 returned 2000
+        -:  137:/*EOF*/
+     2000:  138:/*EOF*/
+     2000:  139:/*EOF*/
+        -:  140:/*EOF*/
+     2000:  141:/*EOF*/
+branch  0 taken 0 (fallthrough)
+branch  1 taken 2000
+        -:  142:/*EOF*/
+    #####:  143:/*EOF*/
+call    0 never executed
+    #####:  144:/*EOF*/
+        -:  145:/*EOF*/
+        -:  146:/*EOF*/
+        -:  147:/*EOF*/
+     2000:  148:/*EOF*/
+call    0 returned 2000
+     2000:  149:/*EOF*/
+        -:  150:/*EOF*/
+     2000:  151:/*EOF*/
+call    0 returned 2000
+        -:  152:/*EOF*/
+     2000:  153:/*EOF*/
+call    0 returned 2000
+     2000:  154:/*EOF*/
+call    0 returned 2000
+     2000:  155:/*EOF*/
+call    0 returned 2000
+     2000:  156:/*EOF*/
+call    0 returned 2000
+     2000:  157:/*EOF*/
+call    0 returned 2000
+     2000:  158:/*EOF*/
+call    0 returned 2000
+     2000:  159:/*EOF*/
+branch  0 taken 2000 (fallthrough)
+branch  1 taken 0
+        -:  160:/*EOF*/
+     2000:  161:/*EOF*/
+call    0 returned 2000
+     2000:  162:/*EOF*/
+        -:  163:/*EOF*/
+        -:  164:/*EOF*/
+        -:  165:/*EOF*/
+    #####:  166:/*EOF*/
+call    0 never executed
+    #####:  167:/*EOF*/
+        -:  168:/*EOF*/
+     2000:  169:/*EOF*/
+branch  0 taken 2000 (fallthrough)
+branch  1 taken 0
+        -:  170:/*EOF*/
+     2000:  171:/*EOF*/
+call    0 returned 2000
+     2000:  172:/*EOF*/
+        -:  173:/*EOF*/
+        -:  174:/*EOF*/
+        -:  175:/*EOF*/
+    #####:  176:/*EOF*/
+call    0 never executed
+    #####:  177:/*EOF*/
+        -:  178:/*EOF*/
+     2000:  179:/*EOF*/
+branch  0 taken 2000 (fallthrough)
+branch  1 taken 0
+        -:  180:/*EOF*/
+     2000:  181:/*EOF*/
+call    0 returned 2000
+     2000:  182:/*EOF*/
+        -:  183:/*EOF*/
+        -:  184:/*EOF*/
+        -:  185:/*EOF*/
+    #####:  186:/*EOF*/
+call    0 never executed
+    #####:  187:/*EOF*/
+        -:  188:/*EOF*/
+     2000:  189:/*EOF*/
+call    0 returned 2000
+        -:  190:/*EOF*/
+     2000:  191:/*EOF*/
+call    0 returned 2000
+     2000:  192:/*EOF*/
+call    0 returned 2000
+     2000:  193:/*EOF*/
+call    0 returned 2000
+     2000:  194:/*EOF*/
+call    0 returned 2000
+     2000:  195:/*EOF*/
+call    0 returned 2000
+     2000:  196:/*EOF*/
+call    0 returned 2000
+     2000:  197:/*EOF*/
+branch  0 taken 2000 (fallthrough)
+branch  1 taken 0
+        -:  198:/*EOF*/
+     2000:  199:/*EOF*/
+call    0 returned 2000
+     2000:  200:/*EOF*/
+        -:  201:/*EOF*/
+        -:  202:/*EOF*/
+        -:  203:/*EOF*/
+    #####:  204:/*EOF*/
+call    0 never executed
+    #####:  205:/*EOF*/
+        -:  206:/*EOF*/
+     2000:  207:/*EOF*/
+branch  0 taken 2000 (fallthrough)
+branch  1 taken 0
+        -:  208:/*EOF*/
+     2000:  209:/*EOF*/
+call    0 returned 2000
+     2000:  210:/*EOF*/
+        -:  211:/*EOF*/
+        -:  212:/*EOF*/
+        -:  213:/*EOF*/
+    #####:  214:/*EOF*/
+call    0 never executed
+    #####:  215:/*EOF*/
+        -:  216:/*EOF*/
+     2000:  217:/*EOF*/
+branch  0 taken 2000 (fallthrough)
+branch  1 taken 0
+        -:  218:/*EOF*/
+     2000:  219:/*EOF*/
+call    0 returned 2000
+     2000:  220:/*EOF*/
+        -:  221:/*EOF*/
+        -:  222:/*EOF*/
+        -:  223:/*EOF*/
+    #####:  224:/*EOF*/
+call    0 never executed
+    #####:  225:/*EOF*/
+        -:  226:/*EOF*/
+        -:  227:/*EOF*/
+        -:  228:/*EOF*/
+        1:  229:/*EOF*/
+call    0 returned 1
+        1:  230:/*EOF*/
+call    0 returned 1
+        1:  231:/*EOF*/
+call    0 returned 1
+        -:  232:/*EOF*/
+        1:  233:/*EOF*/
